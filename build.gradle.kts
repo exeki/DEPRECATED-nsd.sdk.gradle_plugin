@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "ru.kazantsev.nsd.sdk"
-version = "2"
+version = "2.0.0"
 
 repositories {
     mavenCentral()
