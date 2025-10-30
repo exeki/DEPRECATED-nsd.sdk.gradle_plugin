@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.10"
+    kotlin("jvm") version "2.1.0"
     id("maven-publish")
     id("java-gradle-plugin")
     id("org.jetbrains.dokka") version "1.9.10"
@@ -7,15 +7,14 @@ plugins {
 }
 
 group = "ru.kazantsev.nsd.sdk"
-version = "1.4.2"
-
+version = "2"
 
 repositories {
     mavenCentral()
     maven {
         url = uri("https://maven.pkg.github.com/exeki/*")
         credentials {
-            username = System.getenv("GITHUB_USERNAME")
+            username = System.getenv("GITHUB_LOGIN")
             password = System.getenv("GITHUB_TOKEN")
         }
     }
@@ -32,9 +31,6 @@ gradlePlugin {
 }
 
 tasks {
-    compileKotlin {
-        kotlinOptions.jvmTarget = "11"
-    }
 
     javadoc {
         dependsOn(dokkaJavadoc)
@@ -45,7 +41,8 @@ tasks {
     }
 
     compileJava {
-        targetCompatibility = "11"
+        targetCompatibility = JavaVersion.VERSION_21.majorVersion
+        sourceCompatibility = JavaVersion.VERSION_21.majorVersion
     }
 
     register<Jar>("javadocJar") {
@@ -58,13 +55,6 @@ tasks {
         archiveClassifier.set("sources")
     }
 
-    register("testdep") {
-        doLast{
-            configurations.compileClasspath
-            val dep = configurations.compileClasspath.get().find { it.name == "dso_test_fake_classes-1.0.0.jar"}
-            println(dep == null)
-        }
-    }
 }
 
 publishing {
@@ -81,22 +71,7 @@ publishing {
 }
 
 dependencies {
-    implementation("ru.kazantsev.nsd:basic_api_connector:1.0.4")
-    implementation("ru.kazantsev.nsd.sdk:upper_level_classes:1.0.1")
+    implementation("ru.kazantsev.nsd:basic_api_connector:1.+")
     implementation("org.slf4j:slf4j-api:2.0.9")
     implementation("ch.qos.logback:logback-classic:1.4.11")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
-    //implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.17.0")
-    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
-    implementation("com.h2database:h2:2.1.214")
-    implementation("com.squareup:javapoet:1.13.0")
-    implementation("org.jsoup:jsoup:1.16.1")
-    testImplementation(kotlin("test"))
 }
-
-logging.captureStandardOutput(LogLevel.INFO)
-
-System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", "info")
-System.setProperty("org.slf4j.simpleLogger.logFile", "System.out")
-System.setProperty("org.slf4j.simpleLogger.showDateTime", "true")
-System.setProperty("org.slf4j.simpleLogger.dateTimeFormat", "yyyy-MM-dd HH:mm:ss.SSS")

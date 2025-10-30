@@ -1,4 +1,4 @@
-package ru.kazantsev.nsd.sdk.gradle_plugin.fake_classes.client.dto
+package ru.kazantsev.nsd.sdk.gradle_plugin.client.dto
 
 /**
  * DTO с информацией по метаклассу

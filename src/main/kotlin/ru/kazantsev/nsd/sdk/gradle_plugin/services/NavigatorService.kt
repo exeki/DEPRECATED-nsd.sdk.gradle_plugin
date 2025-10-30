@@ -3,7 +3,7 @@ package ru.kazantsev.nsd.sdk.gradle_plugin.services
 import org.gradle.api.Project
 import ru.kazantsev.nsd.basic_api_connector.ConnectorParams
 import ru.kazantsev.nsd.sdk.gradle_plugin.Extension
-import ru.kazantsev.nsd.sdk.gradle_plugin.fake_classes.ArtifactConstants
+import ru.kazantsev.nsd.sdk.gradle_plugin.ArtifactConstants
 
 class NavigatorService(val project: Project) {
     companion object {
@@ -14,10 +14,7 @@ class NavigatorService(val project: Project) {
         instance = this
     }
 
-    val codeReviserService: CodeReviserService = CodeReviserService(this)
-    val fakeClassesService: FakeClassesService = FakeClassesService(this)
     val dependencyService: DependencyService = DependencyService(this)
-    val metainfoService: MetainfoService = MetainfoService(this)
     val codeRunnerService: CodeRunnerService = CodeRunnerService(this)
     val afterEvaluateService: AfterEvaluateService = AfterEvaluateService(this)
     val sourceSetsService: SourceSetsService = SourceSetsService(this)

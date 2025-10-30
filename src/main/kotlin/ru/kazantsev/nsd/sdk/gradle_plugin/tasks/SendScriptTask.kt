@@ -9,7 +9,7 @@ import java.io.File
 open class SendScriptTask : DefaultTask() {
 
     companion object {
-        const val name = "send_script"
+        const val NAME = "send_script"
     }
 
     override fun getGroup(): String? {
@@ -17,14 +17,13 @@ open class SendScriptTask : DefaultTask() {
     }
 
     override fun getDescription(): String? {
-        return "Sending script to NSD installation to run it"
+        return "Отправляет в NSD скрипт для запуска"
     }
 
     @TaskAction
     fun action() {
-        val runner = NavigatorService.instance!!.codeRunnerService
-        val file = if (runner.consoleScriptPath != null) File(runner.consoleScriptPath!!)
-        else File(CodeRunnerService.defaultRunningScript)
-        runner.sendScript(file)
+        val navigator = NavigatorService.instance!!
+        val runner = navigator.codeRunnerService
+        runner.sendScript(navigator.sourceSetsService.consoleFilePath)
     }
 }

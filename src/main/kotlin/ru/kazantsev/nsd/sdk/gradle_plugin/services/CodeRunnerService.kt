@@ -8,18 +8,11 @@ import java.io.File
  */
 class CodeRunnerService(private val navigator: NavigatorService) {
 
-    var consoleScriptPath : String? = null
-
-    companion object {
-        const val defaultRunningScript = "src/main/groovy/console.groovy"
-    }
-
-    fun sendScript(file:File){
+    fun sendScript(filePath : String) {
+        val file = File(filePath)
         navigator.checkInstallationIsSpecifiedElseThrow()
-        val codeReviserExtension = navigator.codeReviserService
-        val processedFile = codeReviserExtension.processFile(file)
         val connector = Connector(navigator.connectorParams)
-        val message : String? = connector.execFile(processedFile)
+        val message: String? = connector.execFile(file)
         if (message != null) {
             println("------------NSD SCRIPT RESULT------------")
             println(message)

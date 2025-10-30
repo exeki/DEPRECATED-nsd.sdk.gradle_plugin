@@ -8,10 +8,32 @@ import java.io.FileWriter
 
 class SourceSetsService(private val navigator: NavigatorService) {
     companion object {
-        val newConsoleFileText = """
-           //The script from this file can be sent to the NSD 
-           //for execution using the task "send_script".
-           //The result of the execution will be displayed in the console.
+
+        const val DEFAULT_SCRIPT_PATH = "src/main/groovy/console.groovy"
+        const val scriptSourceSetPath: String = "src/main/scripts"
+        var sourceSets: MutableSet<String> = mutableSetOf(
+            "src\\main\\groovy",
+            "src\\main\\modules",
+            scriptSourceSetPath
+        )
+        var packageFolders: MutableSet<String> = mutableSetOf(
+            "attrFiltration",
+            "calculationOnEdit",
+            "eventActionConditions",
+            "eventActions",
+            "migration\\console",
+            "migration\\scheduledTasks",
+            "permissions",
+            "scheduledTasks",
+            "stateActions\\fromState",
+            "stateActions\\fromStateCondition",
+            "stateActions\\inState",
+            "stateActions\\inStateCondition"
+        )
+        val NEW_CONSOLE_FILE_TEXT = """
+           //Скрипт из этого файла может быть отправлен в NSD.
+           //Для отправки скрипта выполните задачу "send_script".
+           //Результат выполнения скрипта отобразиться в консоли.  
            
            import static ru.kazantsev.nsd.sdk.global_variables.ApiPlaceholder.*
            import static ru.kazantsev.nsd.sdk.global_variables.GlobalVariablesPlaceholder.*
@@ -19,27 +41,7 @@ class SourceSetsService(private val navigator: NavigatorService) {
         """.trimIndent()
     }
 
-    val scriptSourceSetPath: String = "src/main/scripts"
-    var sourceSets: MutableSet<String> = mutableSetOf(
-        "src\\main\\groovy",
-        "src\\main\\modules",
-        scriptSourceSetPath
-    )
-    var consoleFilePath: String = CodeRunnerService.defaultRunningScript
-    var packageFolders: MutableSet<String> = mutableSetOf(
-        "attrFiltration",
-        "calculationOnEdit",
-        "eventActionConditions",
-        "eventActions",
-        "migration\\console",
-        "migration\\scheduledTasks",
-        "permissions",
-        "scheduledTasks",
-        "stateActions\\fromState",
-        "stateActions\\fromStateCondition",
-        "stateActions\\inState",
-        "stateActions\\inStateCondition"
-    )
+    var consoleFilePath: String = DEFAULT_SCRIPT_PATH
 
     fun createConsoleFile() {
         val consoleFile = File(consoleFilePath)
@@ -49,7 +51,7 @@ class SourceSetsService(private val navigator: NavigatorService) {
             if (!parent.exists()) parent.mkdirs()
             consoleFile.createNewFile()
             val writer = FileWriter(consoleFile)
-            writer.write(newConsoleFileText)
+            writer.write(NEW_CONSOLE_FILE_TEXT)
             writer.close()
             println("Created.")
         } else println("The console file exists.")
