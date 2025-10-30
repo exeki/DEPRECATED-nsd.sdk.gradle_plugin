@@ -25,6 +25,7 @@ gradlePlugin {
         create("nsd_sdk") {
             id = "nsd_sdk"
             version = project.version
+            group = project.group
             implementationClass = "ru.kazantsev.nsd.sdk.gradle_plugin.Plugin"
         }
     }
